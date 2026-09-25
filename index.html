@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OBS Studio — Always On · Expromo</title>
+<meta name="description" content="Make OBS Studio start with the PC, come back after a crash or power cut, and never stop to ask a question. Step-by-step guide with downloadable files.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:      #F5F6F3;
+    --paper-raised:#FFFFFF;
+    --ink:        #14181D;
+    --navy:       #0B1E27;
+    --steel:      #4B5760;
+    --hairline:   #DCE2E4;
+    --signal:     #0B7285;
+    --signal-dim: #E3F1F2;
+    --amber:      #B5650D;
+    --amber-dim:  #FBEFDD;
+    --cyan:       #22C7DB;
+    --leaf:       #1F9C53;
+    --leaf-dim:   #E7F5EC;
+    --content-w:  880px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  h1, h2, h3 { font-family: "Space Grotesk", "Segoe UI", sans-serif; font-weight: 600; margin: 0; color: var(--ink); }
+  code, .mono { font-family: "IBM Plex Mono", ui-monospace, "Courier New", monospace; }
+  code { font-size: 0.86em; background: var(--signal-dim); color: var(--navy); padding: 0.08em 0.4em; border-radius: 4px; overflow-wrap: anywhere; }
+  a { color: var(--signal); }
+  kbd { font-family: "IBM Plex Mono", monospace; font-size: 0.8em; border: 1px solid var(--hairline); border-bottom-width: 2px; border-radius: 4px; padding: 0.05em 0.4em; background: var(--paper-raised); }
+
+  /* ---------- Masthead ---------- */
+  .masthead { background: var(--navy); color: var(--paper); padding: 2.2rem 0 2.4rem; }
+  .masthead__inner { padding: 0 1.5rem; }
+  .masthead__inner { max-width: var(--content-w); margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap; }
+  .masthead__logo { background: var(--paper); border-radius: 6px; padding: 4px 12px; display: inline-flex; align-items: center; flex-shrink: 0; }
+  .masthead__logo img { width: 100px; height: auto; display: block; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #7FC4CC; margin: 0 0 0.6rem 0; }
+  .masthead h1 { color: var(--paper); font-size: clamp(1.6rem, 3.6vw, 2.2rem); letter-spacing: -0.01em; line-height: 1.12; max-width: 24ch; }
+  .masthead .subtitle { margin: 0.7rem 0 0 0; color: #C4CCD1; font-size: 1rem; max-width: 58ch; }
+
+  main { max-width: var(--content-w); margin: 0 auto; padding: 2.2rem 1.5rem 3rem; }
+
+  section { margin: 0 0 2.8rem 0; scroll-margin-top: 1rem; }
+  section h2 { font-size: 1.2rem; margin-bottom: 0.9rem; }
+  section h2 .n { font-family: "IBM Plex Mono", monospace; color: var(--signal); margin-right: 0.5rem; }
+  .section-intro { color: var(--steel); max-width: 66ch; margin: 0 0 1.3rem; font-size: 0.95rem; }
+
+  /* ---------- Facts strip ---------- */
+  .facts { background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 8px; padding: 0.9rem 1.2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.8rem 1.2rem; font-size: 0.86rem; margin-bottom: 2.6rem; }
+  .facts .k { display: block; font-family: "IBM Plex Mono", monospace; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--signal); margin-bottom: 0.15rem; }
+
+  /* ---------- Benefits ---------- */
+  .benefits { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .benefit { background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 8px; padding: 1.1rem 1.2rem 1.2rem; display: grid; grid-template-columns: 2.4rem 1fr; grid-template-rows: auto 1fr; align-items: start; gap: 0.2rem 0.9rem; }
+  .benefit svg { grid-row: span 2; width: 2.4rem; height: 2.4rem; padding: 0.5rem; border-radius: 8px; background: var(--signal-dim); color: var(--signal); }
+  .benefit h3 { font-size: 1rem; }
+  .benefit p { margin: 0; font-size: 0.9rem; color: var(--steel); }
+
+  /* ---------- Flow ---------- */
+  .flow { margin-top: 1.4rem; background: var(--navy); color: var(--paper); border-radius: 8px; padding: 1.2rem 1.2rem 1.1rem; }
+  .flow__label { font-family: "IBM Plex Mono", monospace; font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: #7FC4CC; margin: 0 0 0.9rem; }
+  .flow__row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; }
+  .chip { font-size: 0.84rem; padding: 0.4rem 0.75rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.05); white-space: nowrap; }
+  .chip.hl { background: var(--cyan); color: var(--navy); border-color: var(--cyan); font-weight: 600; }
+  .arrow { color: #7FC4CC; font-family: "IBM Plex Mono", monospace; }
+  .flow__loop { margin: 0.9rem 0 0; padding-top: 0.8rem; border-top: 1px dashed rgba(255,255,255,0.18); font-size: 0.84rem; color: #C4CCD1; display: flex; gap: 0.6rem; align-items: center; }
+  .flow__loop svg { width: 18px; height: 18px; color: var(--cyan); flex-shrink: 0; }
+
+  /* ---------- Download ---------- */
+  .download { background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; }
+  .download__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 1.2rem 1.3rem; border-bottom: 1px solid var(--hairline); }
+  .download__name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 1.05rem; }
+  .download__meta { font-size: 0.8rem; color: var(--steel); }
+  .btn { display: inline-flex; align-items: center; gap: 0.55rem; background: var(--signal); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; padding: 0.7rem 1.2rem; border-radius: 6px; transition: background 0.15s; }
+  .btn:hover { background: #095c6b; }
+  .btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+  .btn svg { width: 18px; height: 18px; }
+  .files { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .files td { padding: 0.6rem 1.3rem; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+  .files tr:last-child td { border-bottom: none; }
+  .files td:first-child { font-family: "IBM Plex Mono", monospace; font-size: 0.82rem; white-space: nowrap; width: 1%; color: var(--navy); font-weight: 500; }
+  .files td:last-child { color: var(--steel); }
+  .files a { font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; }
+  .download__foot { padding: 0.8rem 1.3rem; background: var(--paper); font-size: 0.8rem; color: var(--steel); border-top: 1px solid var(--hairline); }
+
+  /* ---------- Steps ---------- */
+  .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+  .step { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 8px; padding: 1.1rem 1.2rem 1.2rem; }
+  .step__n { font-family: "IBM Plex Mono", monospace; font-weight: 600; color: var(--signal); width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1.5px solid var(--signal); display: flex; align-items: center; justify-content: center; }
+  .step h3 { font-size: 1.02rem; margin: 0.35rem 0 0.4rem; }
+  .step p, .step li { font-size: 0.92rem; }
+  .step p { margin: 0 0 0.6rem; }
+  .step p:last-child { margin-bottom: 0; }
+  .step ul, .step ol { margin: 0 0 0.6rem; padding-left: 1.2rem; }
+  .step li { margin-bottom: 0.25rem; }
+  .why { font-size: 0.84rem !important; color: var(--steel); }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin: 0.4rem 0 0.2rem; }
+  .option { border: 1px solid var(--hairline); border-radius: 6px; padding: 0.75rem 0.9rem; background: var(--paper); font-size: 0.88rem; }
+  .option b { display: block; font-family: "Space Grotesk", sans-serif; font-weight: 600; margin-bottom: 0.2rem; }
+  .option .tag { font-family: "IBM Plex Mono", monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); background: var(--signal-dim); padding: 0.1rem 0.4rem; border-radius: 999px; margin-left: 0.3rem; vertical-align: 2px; }
+  .checks { list-style: none; padding: 0 !important; }
+  .checks li { display: grid; grid-template-columns: 1.3rem 1fr; gap: 0.5rem; margin-bottom: 0.45rem !important; }
+  .checks li::before { content: ""; width: 1rem; height: 1rem; margin-top: 0.22rem; border: 1.5px solid var(--leaf); border-radius: 3px; }
+  .checks .res { color: var(--leaf); font-weight: 600; }
+
+  /* ---------- Callouts ---------- */
+  .callout { background: var(--paper-raised); border: 1px solid var(--hairline); border-left: 4px solid var(--signal); border-radius: 0 8px 8px 0; padding: 0.9rem 1.2rem; font-size: 0.9rem; margin-top: 1rem; }
+  .callout.warn { border-left-color: var(--amber); background: var(--amber-dim); border-color: #EFD9B8; }
+  .callout.warn strong { color: var(--amber); }
+
+  /* ---------- Day to day ---------- */
+  .daily { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .card { background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 8px; padding: 1.1rem 1.2rem; }
+  .card .label { font-family: "IBM Plex Mono", monospace; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--signal); display: block; margin-bottom: 0.4rem; }
+  .card h3 { font-size: 1rem; margin-bottom: 0.45rem; }
+  .card p { margin: 0 0 0.5rem; font-size: 0.88rem; color: var(--steel); }
+  .card p:last-child { margin-bottom: 0; }
+  .card .file { font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--navy); background: var(--signal-dim); padding: 0.15rem 0.5rem; border-radius: 4px; display: inline-block; }
+
+  /* ---------- Settings table / troubleshooting ---------- */
+  .table-wrap { overflow-x: auto; background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 8px; }
+  table.plain { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  table.plain th { text-align: left; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel); padding: 0.7rem 1rem; border-bottom: 1px solid var(--hairline); background: var(--paper); }
+  table.plain td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+  table.plain tr:last-child td { border-bottom: none; }
+  table.plain td:first-child { font-weight: 500; }
+  .mono-cell { font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; white-space: nowrap; }
+
+  details.faq { background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 8px; margin-bottom: 0.6rem; }
+  details.faq summary { cursor: pointer; padding: 0.85rem 1.1rem; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after { content: "+"; font-family: "IBM Plex Mono", monospace; color: var(--signal); font-size: 1.1rem; line-height: 1.3; }
+  details.faq[open] summary::after { content: "\2212"; }
+  details.faq summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; border-radius: 8px; }
+  details.faq .body { padding: 0 1.1rem 0.95rem; font-size: 0.9rem; color: var(--steel); }
+  details.faq .body p { margin: 0 0 0.5rem; }
+  details.faq .body p:last-child { margin: 0; }
+
+  .proven { display: flex; gap: 1rem; align-items: center; background: var(--leaf-dim); border: 1px solid #C9E6D4; border-radius: 8px; padding: 1rem 1.2rem; font-size: 0.9rem; }
+  .proven svg { width: 28px; height: 28px; color: var(--leaf); flex-shrink: 0; }
+
+  footer.page-footer { max-width: var(--content-w); margin: 0 auto; padding: 1.5rem 1.5rem 2.5rem; font-size: 0.8rem; color: var(--steel); border-top: 1px solid var(--hairline); }
+  footer.page-footer p { margin: 0 0 0.4rem; }
+
+  @media (max-width: 720px) {
+    .benefits, .options, .daily { grid-template-columns: 1fr; }
+    .files td:first-child { white-space: normal; }
+  }
+  @media (max-width: 480px) {
+    .masthead__inner { flex-direction: column-reverse; }
+    .step { grid-template-columns: 1fr; gap: 0.3rem; }
+    .files td { padding: 0.55rem 0.9rem; }
+    .download__head .btn { width: 100%; justify-content: center; }
+  }
+  @media print {
+    .masthead { background: none; color: #000; border-bottom: 2px solid #000; }
+    .masthead h1, .masthead .subtitle, .eyebrow { color: #000 !important; }
+    .flow { background: none; color: #000; border: 1px solid #000; }
+    .chip { border-color: #000; }
+    details.faq { break-inside: avoid; }
+    details.faq .body { display: block; }
+    .btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead__inner">
+    <div>
+      <p class="eyebrow">Installation guide &middot; for technicians</p>
+      <h1>OBS Studio &mdash; always on</h1>
+      <p class="subtitle">Make OBS start by itself when the PC boots, come back on its own if it closes or crashes, and never stop to ask a question &mdash; not even after a power cut.</p>
+    </div>
+    <span class="masthead__logo"><img src="assets/expromo-logo.jpg" alt="Expromo"></span>
+  </div>
+</header>
+
+<main>
+
+<div class="facts">
+  <div><span class="k">Time needed</span>About 10 minutes per PC</div>
+  <div><span class="k">Windows</span>Windows 10 or 11, a current release</div>
+  <div><span class="k">OBS Studio</span>Standard installer, default folder</div>
+  <div><span class="k">Admin tools needed</span>None &mdash; two double-clicks</div>
+</div>
+
+<section id="what">
+  <h2><span class="n">01</span>What you get</h2>
+  <p class="section-intro">A small watchdog runs quietly in the background and looks after OBS. Nothing else about OBS or your scenes changes.</p>
+
+  <div class="benefits">
+    <div class="benefit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></svg>
+      <h3>Starts with the PC</h3>
+      <p>OBS opens by itself about 20 seconds after Windows has started &mdash; no one needs to be there.</p>
+    </div>
+    <div class="benefit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+      <h3>Comes back if it stops</h3>
+      <p>Closed by accident or crashed &mdash; OBS is running again within 5 seconds.</p>
+    </div>
+    <div class="benefit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <h3>No questions after a power cut</h3>
+      <p>After an unexpected shutdown OBS normally asks whether to start in <em>Safe Mode</em> and waits for a click. The watchdog clears that first, so OBS always opens normally.</p>
+    </div>
+    <div class="benefit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/></svg>
+      <h3>No pop-ups</h3>
+      <p>Update notices and &ldquo;missing files&rdquo; warnings are switched off, and OBS starts tucked away next to the clock.</p>
+    </div>
+  </div>
+
+  <div class="flow" aria-label="How it works">
+    <p class="flow__label">How it works</p>
+    <div class="flow__row">
+      <span class="chip">PC powers on</span><span class="arrow">&rarr;</span>
+      <span class="chip">Windows signs in</span><span class="arrow">&rarr;</span>
+      <span class="chip">Watchdog starts</span><span class="arrow">&rarr;</span>
+      <span class="chip">Waits 20 s</span><span class="arrow">&rarr;</span>
+      <span class="chip">Clears Safe Mode flag</span><span class="arrow">&rarr;</span>
+      <span class="chip hl">OBS running</span>
+    </div>
+    <p class="flow__loop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+      <span>If OBS closes for any reason, the watchdog waits 5 seconds and starts it again &mdash; day and night.</span>
+    </p>
+  </div>
+</section>
+
+<section id="download">
+  <h2><span class="n">02</span>Download</h2>
+  <p class="section-intro">Everything is in one small ZIP file. You'll use the same file on every PC.</p>
+
+  <div class="download">
+    <div class="download__head">
+      <div>
+        <div class="download__name">Expromo OBS Autostart</div>
+        <div class="download__meta">ZIP &middot; 7 small files &middot; no installer, no admin tools</div>
+      </div>
+      <a class="btn" href="download/Expromo-OBS-Autostart.zip" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        Download ZIP
+      </a>
+    </div>
+    <table class="files">
+      <tr><td>Install.cmd</td><td>Sets it up for the Windows user you are signed in as.</td></tr>
+      <tr><td>Pause OBS.cmd</td><td>Closes OBS and keeps it closed &mdash; for maintenance.</td></tr>
+      <tr><td>Resume OBS.cmd</td><td>Back to normal: OBS starts and is kept running.</td></tr>
+      <tr><td>Uninstall.cmd</td><td>Removes everything again. OBS itself is not touched.</td></tr>
+      <tr><td>obs-watchdog.ps1</td><td>The watchdog itself. <a href="kit/obs-watchdog.ps1">view</a></td></tr>
+      <tr><td>setup.ps1</td><td>Does the work behind the four buttons above. <a href="kit/setup.ps1">view</a></td></tr>
+      <tr><td>README.txt</td><td>A short reminder of the above.</td></tr>
+    </table>
+    <div class="download__foot">
+      What it adds to the PC: one scheduled task called <code>OBS Appliance Watchdog</code> and one folder, <code>%LOCALAPPDATA%\OBS-Appliance</code>. That's all &mdash; and <em>Uninstall.cmd</em> removes both.
+    </div>
+  </div>
+</section>
+
+<section id="setup">
+  <h2><span class="n">03</span>Set it up, step by step</h2>
+  <p class="section-intro">Steps 1&ndash;3 prepare the PC, steps 4&ndash;5 install the watchdog, and step 6 proves it works. Do them in this order.</p>
+
+  <ol class="steps">
+
+    <li class="step">
+      <span class="step__n">1</span>
+      <div>
+        <h3>Install OBS Studio and set it up</h3>
+        <p>Download OBS Studio from <a href="https://obsproject.com/download" target="_blank" rel="noopener">obsproject.com</a> and install it with the <strong>standard installer</strong>, keeping the default folder. The portable ZIP version won't work with the watchdog.</p>
+        <p>Open OBS, finish its first-start wizard, build your scenes and sources, and check that everything looks right. Then close OBS.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <span class="step__n">2</span>
+      <div>
+        <h3>Make Windows sign in by itself</h3>
+        <p>The watchdog starts when the Windows user signs in. After a restart or power cut, Windows must reach the desktop without anyone typing a password. Choose one:</p>
+        <div class="options">
+          <div class="option"><b>Account without a password <span class="tag">Simplest</span></b>A local Windows account with no password goes straight to the desktop. This is how the Expromo showroom is set up.</div>
+          <div class="option"><b>Account with a password</b>Use Microsoft's free <a href="https://learn.microsoft.com/sysinternals/downloads/autologon" target="_blank" rel="noopener">Autologon</a> tool: enter the user name and password once, click <em>Enable</em>. The password is stored encrypted.</div>
+        </div>
+        <p class="why">Use one dedicated Windows user for OBS, and do the rest of this guide signed in as that user.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <span class="step__n">3</span>
+      <div>
+        <h3>Let the PC switch itself back on after a power cut</h3>
+        <p>In the PC's BIOS/UEFI setup (usually <kbd>Del</kbd> or <kbd>F2</kbd> during start-up), find the power setting and set it to <strong>Power On</strong>. Each manufacturer names it differently, for example <em>Restore on AC Power Loss</em>, <em>AC Back</em> or <em>After Power Failure</em>.</p>
+        <p class="why">Without this, the PC stays off after a power cut until someone presses its power button.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <span class="step__n">4</span>
+      <div>
+        <h3>Unblock and unzip the download</h3>
+        <ol>
+          <li>Right-click <code>Expromo-OBS-Autostart.zip</code> &rarr; <strong>Properties</strong>, tick <strong>Unblock</strong> at the bottom, click <strong>OK</strong>.</li>
+          <li>Right-click it again &rarr; <strong>Extract All&hellip;</strong> and extract it to a permanent place, for example <code>C:\Expromo</code>.</li>
+        </ol>
+        <p class="why">Keep the folder: its Pause, Resume and Uninstall buttons are what you'll use later.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <span class="step__n">5</span>
+      <div>
+        <h3>Double-click <code>Install.cmd</code></h3>
+        <p>A small window appears and confirms: <em>&ldquo;Installed for user&nbsp;&hellip;&rdquo;</em>. Press any key to close it. About 20 seconds later OBS starts &mdash; you'll find its icon next to the clock.</p>
+        <p class="why">If Windows shows a blue <em>&ldquo;Windows protected your PC&rdquo;</em> screen, click <strong>More info</strong> &rarr; <strong>Run anyway</strong>. That appears for any downloaded script, and step 4's <em>Unblock</em> normally prevents it.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <span class="step__n">6</span>
+      <div>
+        <h3>Test it &mdash; three quick checks</h3>
+        <ul class="checks">
+          <li><span>Right-click the OBS icon next to the clock &rarr; <strong>Exit</strong>. <span class="res">OBS is back within about 5 seconds.</span></span></li>
+          <li><span>Restart the PC and don't touch it. <span class="res">Windows reaches the desktop and OBS opens by itself.</span></span></li>
+          <li><span>Optional, the real test: pull the power plug while OBS is running, then plug it back in. <span class="res">The PC starts, and OBS opens normally without asking about Safe Mode.</span></span></li>
+        </ul>
+      </div>
+    </li>
+
+  </ol>
+</section>
+
+<section id="daily">
+  <h2><span class="n">04</span>Day to day</h2>
+
+  <div class="daily">
+    <div class="card">
+      <span class="label">Working in OBS</span>
+      <h3>Just open it</h3>
+      <p>Click the OBS icon next to the clock to bring OBS up and edit scenes as usual. The watchdog doesn't get in the way.</p>
+    </div>
+    <div class="card">
+      <span class="label">Maintenance</span>
+      <h3>Keep OBS closed</h3>
+      <p>For example, to update OBS or install a plugin, double-click</p>
+      <p><span class="file">Pause OBS.cmd</span></p>
+      <p>If OBS is still open afterwards, right-click its icon &rarr; <strong>Exit</strong>. It now stays closed.</p>
+    </div>
+    <div class="card">
+      <span class="label">Back to normal</span>
+      <h3>Resume</h3>
+      <p>When you're done, double-click</p>
+      <p><span class="file">Resume OBS.cmd</span></p>
+      <p>OBS starts within about 20 seconds and is looked after again.</p>
+    </div>
+  </div>
+
+  <div class="callout warn"><strong>Don't forget to resume.</strong> A paused PC keeps OBS closed even after a restart &mdash; that's on purpose, so maintenance isn't interrupted, but it also means OBS won't come back until someone runs <em>Resume OBS.cmd</em>.</div>
+</section>
+
+<section id="adjust">
+  <h2><span class="n">05</span>Adjusting it <span style="font-weight:400;color:var(--steel);font-size:0.9rem">(optional)</span></h2>
+  <p class="section-intro">The defaults suit almost every PC. If you do need to change something, open <code>obs-watchdog.ps1</code> from your extracted folder in Notepad, change the value near the top, save, and run <code>Install.cmd</code> again. The change applies from the next restart.</p>
+
+  <div class="table-wrap">
+    <table class="plain">
+      <thead><tr><th>Setting</th><th>Default</th><th>When to change it</th></tr></thead>
+      <tbody>
+        <tr><td class="mono-cell">$StartupDelaySeconds</td><td class="mono-cell">20</td><td>Raise it (e.g. to 45) on PCs whose capture cards, displays or network drives need longer to be ready after start-up.</td></tr>
+        <tr><td class="mono-cell">$RestartDelaySeconds</td><td class="mono-cell">5</td><td>Rarely needed. The pause before OBS is started again after closing.</td></tr>
+        <tr><td class="mono-cell">$ObsArguments</td><td class="mono-cell">--minimize-to-tray<br>--disable-updater<br>--disable-missing-files-check</td><td>Add OBS start-up options, e.g. <code>--scene "Main"</code> to always open on a given scene, or <code>--startvirtualcam</code>, <code>--startrecording</code>, <code>--startstreaming</code>. Put any name with spaces in double quotes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="help">
+  <h2><span class="n">06</span>If something isn't right</h2>
+
+  <details class="faq">
+    <summary>OBS doesn't start after a restart</summary>
+    <div class="body">
+      <p>Check that Windows really reaches the desktop by itself (step 2). If it stops at the sign-in screen, the watchdog never starts.</p>
+      <p>Also check that OBS wasn't left paused &mdash; double-click <em>Resume OBS.cmd</em>.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>OBS still asks about Safe Mode</summary>
+    <div class="body">
+      <p>OBS was started some other way than by the watchdog, for example via a shortcut in the Windows <em>Startup</em> folder. Remove any other way OBS is started automatically, so only the watchdog starts it.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>Install says &ldquo;OBS Studio was not found&rdquo;</summary>
+    <div class="body">
+      <p>OBS is installed in a different folder or is the portable version. Reinstall it with the standard installer and the default folder (<code>C:\Program Files\obs-studio</code>), then run <em>Install.cmd</em> again.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>OBS reports that &ldquo;icuuc.dll&rdquo; is missing</summary>
+    <div class="body">
+      <p>Windows is too old for current OBS versions &mdash; typically Windows 10 LTSB 2016. Update Windows to a current release of Windows 10 or 11.</p>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>Where can I see what happened?</summary>
+    <div class="body">
+      <p>Every start, stop and restart is written with date and time to <code>%LOCALAPPDATA%\OBS-Appliance\watchdog.log</code>. Paste that path into the Explorer address bar to open it. Please include this file when contacting Expromo support.</p>
+    </div>
+  </details>
+</section>
+
+<div class="proven">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+  <span><strong>Proven in daily use.</strong> This is the same watchdog that keeps OBS running in the Expromo showroom in Aarhus &mdash; through restarts, crashes and power cuts.</span>
+</div>
+
+</main>
+
+<footer class="page-footer">
+  <p>Tested with OBS Studio 32.2.1 on Windows 10. The scripts are plain text &mdash; you're welcome to read them before running: <a href="https://github.com/daveleo/obs-autostart">github.com/daveleo/obs-autostart</a>.</p>
+  <p>&copy; Expromo</p>
+</footer>
+
+</body>
+</html>
