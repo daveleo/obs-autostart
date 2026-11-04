@@ -5,7 +5,7 @@ priority:
 version: 
 deadline:
 next: None. Finished public guide; update only if OBS or Windows behaviour changes
-updated: 2026-10-07
+updated: 2026-11-04
 repo: daveleo/obs-autostart
 url: https://daveleo.github.io/obs-autostart/
 ---
